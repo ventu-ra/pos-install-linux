@@ -3,17 +3,16 @@
     "gnome-shell",
     "gnome-control-center",
     "gnome-bluetooth",
+    "gdm3",
+    "gnome-session",
     "bluez",
-    "bluez-utils",
     "network-manager",
     "network-manager-gnome",
     "neovim",
     "cargo",
     "yarn",
-    "pnpm",
     "npm",
-    "qemu",
-    "libvirt-bin",
+    "libvirt",
     "virt-manager",
     "dnsmasq",
     "build-essential",
@@ -22,12 +21,12 @@
   ],
   "configurations": [
     {
-      "command": "sudo systemctl enable --now libvirtd.service",
-      "description": "Ativa o serviço de virtualização (libvirt)"
+      "command": "sudo apt install qemu-kvm virt-manager virtinst libvirt-clients bridge-utils libvirt-daemon-system -y",
+      "description": " Install QEMU/KVM on Ubuntu"
     },
     {
-      "command": "sudo systemctl enable --now dnsmasq.service",
-      "description": "Ativa o serviço DNS (dnsmasq)"
+      "command": "sudo systemctl enable --now libvirtd",
+      "description": "Ativa o serviço de virtualização (libvirt)"
     },
     {
       "command": "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'",

@@ -11,9 +11,9 @@ echo "Distribuição detectada: $DISTRO"
 
 
 case "$DISTRO" in
-  fedora)
+  ubuntu)
     echo "Executando script para Ubuntu..."
-    bash fedora/install.sh
+    bash "$SCRIPTS_DIR/ubuntu.sh"
     ;;
   *)
     echo "Distrobuição não suportada"

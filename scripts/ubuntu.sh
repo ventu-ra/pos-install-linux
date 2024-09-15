@@ -52,9 +52,20 @@ install_packages() {
         exit 1
     fi
 
-    echo "Instalando pacotes no Ubuntu..."
-    sudo apt update
-    sudo apt install -y $PACKAGES
+        # Usa jq para ler a lista de pacotes e itera sobre eles
+    jq -r '.packages[]' "$CONFIG_FILE" | while IFS= read -r package; do
+        if [ -n "$package" ]; then
+            echo "Instalando o pacote: $package"
+            sudo apt-get install -y "$package"
+
+            # Verifica se a instalação foi bem-sucedida
+            if [ $? -eq 0 ]; then
+                echo "Pacote $package instalado com sucesso."
+            else
+                echo "Erro ao instalar o pacote $package."
+            fi
+        fi
+    done
 }
 
 # Função para aplicar configurações
@@ -81,9 +92,9 @@ apply_configurations() {
 install_packages
 apply_configurations
 
-echo "Ativando o GDM (GNOME Display Manager)"
-sudo systemctl enable --now gdm
-sudo systemctl start --now gdm
+# echo "Ativando o GDM (GNOME Display Manager)"
+# sudo systemctl enable --now gdm
+# sudo systemctl start --now gdm
 
 echo "Reiniciando o sistema"
 # Descomente a linha abaixo para reiniciar o sistema
