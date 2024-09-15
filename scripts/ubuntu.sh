@@ -34,7 +34,7 @@ cleanup_system() {
 # Função para instalar pacotes
 install_packages() {
     # Chama a função de limpeza
-    # cleanup_system
+    cleanup_system
 
     # Verifica se o jq está instalado; se não, instala
     if ! command -v jq &> /dev/null; then
