@@ -2,7 +2,7 @@
 set -x  # Adiciona saída de depuração
 
 # Fonte de configuração
-CONFIG_FILE="./config/ubuntu.yml"
+CONFIG_FILE="./config/ubuntu.json"
 
 # Função para remover aplicativos Snap e GNOME padrão
 cleanup_system() {
@@ -36,18 +36,15 @@ install_packages() {
     # Chama a função de limpeza
     # cleanup_system
 
-    # Verifica se o yq está instalado; se não, instala
-    if ! command -v yq &> /dev/null; then
-        echo "yq não encontrado. Instalando..."
-        VERSION="v4.21.1"  # Substitua pela versão desejada
-        BINARY="yq"
-        wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}_linux_amd64.tar.gz -O - |\
-        tar xz && sudo mv ${BINARY} /usr/bin/yq
-        sudo chmod +x /usr/bin/yq
+    # Verifica se o jq está instalado; se não, instala
+    if ! command -v jq &> /dev/null; then
+        echo "jq não encontrado. Instalando..."
+        sudo apt update
+        sudo apt install -y jq
     fi
 
-    # Usa yq para ler a lista de pacotes e monta uma string com todos os pacotes
-    PACKAGES=$(yq e '.packages[]' "$CONFIG_FILE" | xargs)
+    # Usa jq para ler a lista de pacotes e monta uma string com todos os pacotes
+    PACKAGES=$(jq -r '.packages[]' "$CONFIG_FILE" | xargs)
     echo "Pacotes a serem instalados: $PACKAGES"
 
     if [ -z "$PACKAGES" ]; then
@@ -64,10 +61,10 @@ install_packages() {
 apply_configurations() {
     echo "Aplicando configurações no Ubuntu..."
 
-    # Usa yq para iterar sobre cada configuração
-    yq e '.configurations[] | select(.command != null)' "$CONFIG_FILE" | while IFS= read -r item; do
-        command=$(echo "$item" | yq e '.command' -)
-        description=$(echo "$item" | yq e '.description' -)
+    # Usa jq para iterar sobre cada configuração
+    jq -c '.configurations[] | select(.command != null)' "$CONFIG_FILE" | while IFS= read -r item; do
+        command=$(echo "$item" | jq -r '.command')
+        description=$(echo "$item" | jq -r '.description')
 
         echo "Executando: $description"
 
