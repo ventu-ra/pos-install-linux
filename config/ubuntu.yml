@@ -1,0 +1,31 @@
+packages:
+  - gnome-shell
+  - gnome-control-center
+  - gnome-bluetooth
+  - bluez
+  - bluez-utils
+  - network-manager
+  - network-manager-gnome
+  - neovim
+  - cargo
+  - yarn
+  - pnpm
+  - npm
+  - qemu
+  - libvirt-bin
+  - virt-manager
+  - dnsmasq
+  - build-essential
+  - curl
+  - distrobox
+
+configurations:
+  - command: "sudo systemctl enable --now libvirtd.service"
+    description: "Ativa o serviço de virtualização (libvirt)"
+  - command: "sudo systemctl enable --now dnsmasq.service"
+    description: "Ativa o serviço DNS (dnsmasq)"
+  - command: "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'"
+    description: "Define o tema do GNOME"
+  - command: "sudo systemctl enable --now gdm3"
+    description: "Ativa o GDM (GNOME Display Manager)"
+

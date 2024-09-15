@@ -1,0 +1,12 @@
+fedora:
+  - git
+  - curl
+
+
+arch:
+  - gnome-shell
+  - gnome-control-center
+  - git
+  - curl
+  - vim
+
